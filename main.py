@@ -2,14 +2,16 @@ import keyboard
 import time
 
 from scenes.two_players import TwoPlayers
+from scenes.versus_ai import VersusAI
 
 
 class Game:
     def __init__(self):
         self.game_state_manager = GameStateManager("Two Players")
         self.two_players = TwoPlayers(self.game_state_manager)
+        self.versus_ai = VersusAI(self.game_state_manager)
 
-        self.states = {"Two Players": self.two_players}
+        self.states = {"Two Players": self.two_players, "Versus AI": self.versus_ai}
 
     def run(self):
         while True:
