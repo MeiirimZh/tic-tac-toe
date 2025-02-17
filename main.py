@@ -1,4 +1,3 @@
-import keyboard
 import time
 
 from scenes.two_players import TwoPlayers
@@ -17,7 +16,7 @@ class Game:
         while True:
             self.states[self.game_state_manager.get_state()].run()
 
-            time.sleep(.2)
+            time.sleep(.15)
 
 
 class GameStateManager:
