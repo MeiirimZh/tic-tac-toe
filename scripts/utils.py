@@ -24,7 +24,7 @@ def check_grid(x, y, grid):
     elif set(secondary_diagonal) == {'o'}:
         return "o"
 
-    return "None"
+    return "none"
 
 
 def print_grid(grid):
