@@ -28,6 +28,8 @@ class TwoPlayers:
 
         self.win = "none"
         self.win_text = {"x": "Player 1 wins!\n", "o": "Player 2 wins!\n", "draw": "Draw!\n"}
+        self.player_1_wins = 0
+        self.player_2_wins = 0
 
     def restart_game(self):
         self.grid = [
@@ -42,12 +44,16 @@ class TwoPlayers:
         self.player_turn = "x"
         self.win = "none"
 
+        self.turns = 0
+
     def run(self):
         self.display_grid = [row[:] for row in self.grid]
 
         self.display_grid[self.y][self.x] = "v"
 
         if self.win == "none":
+            print(f'Player 1 wins: {self.player_1_wins}\tPlayer 2 wins: {self.player_2_wins}')
+
             if self.player_turn == "x":
                 print("Player 1's (X) turn\n")
             else:
@@ -77,8 +83,13 @@ class TwoPlayers:
 
                 self.win = check_grid(self.y, self.x, self.grid)
 
-                if self.turns == 9 and self.win == "none":
-                    self.win = "draw"
+                if self.win == "x":
+                    self.player_1_wins += 1
+                elif self.win == "o":
+                    self.player_2_wins += 1
+                else:
+                    if self.turns == 9:
+                        self.win = "draw"
                 
         else:
             print(self.win_text[self.win])
