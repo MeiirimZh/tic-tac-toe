@@ -98,6 +98,7 @@ class VersusAI:
 
                     if self.win == self.player:
                         self.win = self.player
+                        self.player_wins += 1
 
                     if self.win == "none" and self.turns == 9:
                         self.win = "draw"
@@ -136,6 +137,7 @@ class VersusAI:
                 
                 if self.win == self.ai:
                     self.win = self.ai
+                    self.ai_wins += 1
 
                 if self.win == "none" and self.turns == 9:
                     self.win = "draw"
