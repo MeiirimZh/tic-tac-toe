@@ -2,7 +2,7 @@ import keyboard
 import random
 import os
 
-from scripts.utils import print_grid
+from scripts.utils import print_grid, find_pair
 
 
 class VersusAI:
@@ -92,6 +92,8 @@ class VersusAI:
                     self.turn = self.ai
             else:
                 print_grid(self.grid)
+
+                find_pair(self.grid)
 
                 key = keyboard.read_key()
 
