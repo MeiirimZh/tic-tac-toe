@@ -39,16 +39,41 @@ def find_pair(grid):
     
     # Check the columns
     for i in range(len(grid)):
-        column = []
-        for j in range(len(grid)):
-            # x = [x for x in grid[j][i] if x == "x"]
-            # o = [x for x in grid[j][i] if x == "o"]
-            # if len(x) == 2 and len(o) == 0:
-            #     return j, i
-            # elif len(o) == 2 and len(x) == 0:
-            #     return j, i
-            pass
-            
+        column = [grid[x][i] for x in range(3)]
+        x = [x for x in column if x == "x"]
+        o = [x for x in column if x == "o"]
+        if len(x) == 2 and len(o) == 0:
+            return column.index(" "), i
+        elif len(o) == 2 and len(x) == 0:
+            return column.index(" "), i
+        
+    # Check all diagonals
+    main_diagonal = [grid[0][0], grid[1][1], grid[2][2]]
+    x = [x for x in main_diagonal if x == "x"]
+    o = [x for x in main_diagonal if x == "o"]
+    if len(x) == 2 and len(o) == 0:
+        return main_diagonal.index(" "), main_diagonal.index(" ")
+    elif len(o) == 2 and len(x) == 0:
+        return main_diagonal.index(" "), main_diagonal.index(" ")
+    
+    secondary_diagonal = [grid[0][2], grid[1][1], grid[2][0]]
+    x = [x for x in secondary_diagonal if x == "x"]
+    o = [x for x in secondary_diagonal if x == "o"]
+    found_pair = False
+
+    if len(x) == 2 and len(o) == 0:
+        found_pair = True
+    elif len(o) == 2 and len(x) == 0:
+        found_pair = True
+
+    if found_pair:
+        if secondary_diagonal.index(" ") == 0:
+            return 0, 2
+        elif secondary_diagonal.index(" ") == 2:
+            return 2, 0
+        else:
+            return 1, 1
+    
     return None
 
 
@@ -57,12 +82,3 @@ def print_grid(grid):
         for column in row:
             print(f'[{column}]', end="")
         print()
-
-
-grid = [
-    ["x", " ", " "],
-    [" ", " ", " "],
-    ["x", " ", " "]
-]
-
-print(find_pair(grid))
