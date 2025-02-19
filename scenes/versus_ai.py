@@ -1,8 +1,9 @@
+import time
 import keyboard
 import random
 import os
 
-from scripts.utils import print_grid, find_pair
+from scripts.utils import print_grid, find_pair, check_grid
 
 
 class VersusAI:
@@ -32,7 +33,6 @@ class VersusAI:
         self.turns = 0
 
         self.win = "none"
-        self.win_text = {"x": "Player 1 wins!\n", "o": "Player 2 wins!\n", "draw": "Draw!\n"}
         self.player_wins = 0
         self.ai_wins = 0
 
@@ -53,7 +53,9 @@ class VersusAI:
         self.x = 0
         self.y = 0
 
-        self.player = "x" if self.player == "o" else "o"
+        self.choose_char()
+
+        self.turn = random.choice(["x", "o"])
 
         self.win = "none"
 
@@ -73,6 +75,7 @@ class VersusAI:
                 print(f"Computer's ({self.ai}) turn. Computer is thinking...\n")
 
             if self.player == self.turn:
+                # Player's turn
                 print_grid(self.display_grid)
 
                 key = keyboard.read_key()
@@ -89,12 +92,72 @@ class VersusAI:
                     if self.grid[self.y][self.x] != "x" and self.grid[self.y][self.x] != "o":
                         self.grid[self.y][self.x] = self.player
 
+                    self.turns += 1
+
+                    self.win = check_grid(self.y, self.x, self.grid)
+
+                    if self.win == self.player:
+                        self.win = self.player
+
+                    if self.win == "none" and self.turns == 9:
+                        self.win = "draw"
+
                     self.turn = self.ai
             else:
+                # AI's turn
                 print_grid(self.grid)
 
-                find_pair(self.grid)
+                move = find_pair(self.grid)
+                ai_x = 0
+                ai_y = 0
 
-                key = keyboard.read_key()
+                if move:
+                    # Tactic: blocking
+                    self.grid[move[0]][move[1]] = self.ai
+                    ai_x = move[1]
+                    ai_y = move[0]
+                else:
+                    # Tactic: advance
+                    moved = False
+                    while not moved:
+                        x = random.randint(0, 2)
+                        y = random.randint(0, 2)
+                        if self.grid[y][x] == " ":
+                            self.grid[y][x] = self.ai
+
+                            ai_x = x
+                            ai_y = y
+
+                            moved = True
+
+                self.turns += 1
+
+                self.win = check_grid(ai_y, ai_x, self.grid)
+                
+                if self.win == self.ai:
+                    self.win = self.ai
+
+                if self.win == "none" and self.turns == 9:
+                    self.win = "draw"
+
+                time.sleep(.85)
+
+                self.turn = self.player
+        else:
+            if self.win == self.player:
+                print("Player wins!\n")
+            elif self.win == self.ai:
+                print("Computer wins!\n")
+            else:
+                print("Draw!\n")
+
+            print_grid(self.grid)
+
+            print("\nPress [Enter] to restart the game")
+
+            key = keyboard.read_key()
+
+            if key == "enter":
+                self.restart_game()
 
         os.system("cls")
