@@ -2,6 +2,7 @@ import time
 import keyboard
 import random
 import os
+import sys
 
 from scripts.utils import print_grid, find_pair, check_grid
 
@@ -35,6 +36,9 @@ class VersusAI:
         self.win = "none"
         self.player_wins = 0
         self.ai_wins = 0
+
+        self.options = ["Restart", "Return to menu", "Quit"]
+        self.current_option = 0
 
         self.choose_char()
 
@@ -88,22 +92,24 @@ class VersusAI:
                     self.x = min(2, self.x + 1)
                 if key == "left":
                     self.x = max(0, self.x - 1)
+                if key == "esc":
+                    self.game_state_manager.set_state("Menu")
                 if key == "enter":
                     if self.grid[self.y][self.x] != "x" and self.grid[self.y][self.x] != "o":
                         self.grid[self.y][self.x] = self.player
 
-                    self.turns += 1
+                        self.turns += 1
 
-                    self.win = check_grid(self.y, self.x, self.grid)
+                        self.win = check_grid(self.y, self.x, self.grid)
 
-                    if self.win == self.player:
-                        self.win = self.player
-                        self.player_wins += 1
+                        if self.win == self.player:
+                            self.win = self.player
+                            self.player_wins += 1
 
-                    if self.win == "none" and self.turns == 9:
-                        self.win = "draw"
+                        if self.win == "none" and self.turns == 9:
+                            self.win = "draw"
 
-                    self.turn = self.ai
+                        self.turn = self.ai
             else:
                 # AI's turn
                 print_grid(self.grid)
@@ -154,12 +160,26 @@ class VersusAI:
                 print("Draw!\n")
 
             print_grid(self.grid)
+            print("\n")
 
-            print("\nPress [Enter] to restart the game")
+            for option in self.options:
+                if self.options.index(option) == self.current_option:
+                    print(f'> {option}')
+                else:
+                    print(option)
 
             key = keyboard.read_key()
 
+            if key == "up":
+                self.current_option = max(0, self.current_option - 1)
+            if key == "down":
+                self.current_option = min(2, self.current_option + 1)
             if key == "enter":
-                self.restart_game()
+                if self.current_option == 0:
+                    self.restart_game()
+                elif self.current_option == 1:
+                    self.game_state_manager.set_state("Menu")
+                else:
+                    sys.exit()
 
         os.system("cls")

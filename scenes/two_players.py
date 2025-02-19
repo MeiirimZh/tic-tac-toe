@@ -1,5 +1,6 @@
 import keyboard
 import os
+import sys
 
 from scripts.utils import check_grid, print_grid
 
@@ -30,6 +31,9 @@ class TwoPlayers:
         self.win_text = {"x": "Player 1 wins!\n", "o": "Player 2 wins!\n", "draw": "Draw!\n"}
         self.player_1_wins = 0
         self.player_2_wins = 0
+
+        self.options = ["Restart", "Return to menu", "Quit"]
+        self.current_option = 0
 
     def restart_game(self):
         self.grid = [
@@ -71,6 +75,8 @@ class TwoPlayers:
                 self.x = min(2, self.x + 1)
             if key == "left":
                 self.x = max(0, self.x - 1)
+            if key == "esc":
+                self.game_state_manager.set_state("Menu")
             if key == "enter":
                 if self.grid[self.y][self.x] != "x" and self.grid[self.y][self.x] != "o":
                     self.grid[self.y][self.x] = self.player_turn
@@ -95,12 +101,26 @@ class TwoPlayers:
             print(self.win_text[self.win])
 
             print_grid(self.grid)
+            print("\n")
 
-            print("\nPress [Enter] to restart the game")
+            for option in self.options:
+                if self.options.index(option) == self.current_option:
+                    print(f'> {option}')
+                else:
+                    print(option)
 
             key = keyboard.read_key()
 
+            if key == "up":
+                self.current_option = max(0, self.current_option - 1)
+            if key == "down":
+                self.current_option = min(2, self.current_option + 1)
             if key == "enter":
-                self.restart_game()
+                if self.current_option == 0:
+                    self.restart_game()
+                elif self.current_option == 1:
+                    self.game_state_manager.set_state("Menu")
+                else:
+                    sys.exit()
         
         os.system("cls")
