@@ -7,7 +7,7 @@ class Menu:
     def __init__(self, game_state_manager):
         self.game_state_manager = game_state_manager
 
-        self.options = ["Player vs Computer", "Player vs Player", "Quit"]
+        self.options = ["Player vs Computer", "Player vs Player", "Settings", "Quit"]
         self.current_option = 0
 
     def run(self):
@@ -26,12 +26,14 @@ class Menu:
         if key == "up":
             self.current_option = max(0, self.current_option - 1)
         if key == "down":
-            self.current_option = min(2, self.current_option + 1)
+            self.current_option = min(len(self.options)-1, self.current_option + 1)
         if key == "enter":
             if self.current_option == 0:
                 self.game_state_manager.set_state("Versus AI")
             elif self.current_option == 1:
                 self.game_state_manager.set_state("Two Players")
+            elif self.current_option == 2:
+                self.game_state_manager.set_state("Settings")
             else:
                 sys.exit()
 
