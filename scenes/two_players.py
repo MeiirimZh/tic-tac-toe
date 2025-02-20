@@ -105,7 +105,7 @@ class TwoPlayers:
             print("\n")
 
             for option in self.options:
-                if self.options.index(option) == self.current_option:
+                if option == self.options[self.current_option]:
                     print(f'> {option}')
                 else:
                     print(option)

@@ -25,6 +25,7 @@ class Settings:
         self.current_tab = tab 
 
     def run(self):
+        # Settings
         if self.current_tab == 0:
             print("Settings\n")
 
@@ -42,6 +43,7 @@ class Settings:
                 self.current_option = min(len(self.options)-1, self.current_option + 1)
             if key == "enter":
                 self.commands[self.options[self.current_option]]()
+        # Cursor
         elif self.current_tab == 1:
             print("Cursor\n")
 
@@ -59,6 +61,7 @@ class Settings:
                 self.data.cursor = self.cursor_options[self.current_cursor_option]
             if key == "esc":
                 self.current_tab = 0
+        # Random AI behavior
         else:
             print("Random AI behavior\n")
 

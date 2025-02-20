@@ -77,12 +77,9 @@ class VersusAI:
             print(f'Player wins: {self.player_wins}\tComputer wins: {self.ai_wins}')
 
             if self.player == self.turn:
-                print(f"Player's ({self.player}) turn\n")
-            else:
-                print(f"Computer's ({self.ai}) turn. Computer is thinking...\n")
-
-            if self.player == self.turn:
                 # Player's turn
+                print(f"Player's ({self.player}) turn\n")
+
                 print_grid(self.display_grid)
 
                 key = keyboard.read_key()
@@ -115,6 +112,8 @@ class VersusAI:
                         self.turn = self.ai
             else:
                 # AI's turn
+                print(f"Computer's ({self.ai}) turn. Computer is thinking...\n")
+
                 print_grid(self.grid)
 
                 move = find_pair(self.grid)
@@ -174,7 +173,7 @@ class VersusAI:
             print("\n")
 
             for option in self.options:
-                if self.options.index(option) == self.current_option:
+                if option == self.options[self.current_option]:
                     print(f'> {option}')
                 else:
                     print(option)
