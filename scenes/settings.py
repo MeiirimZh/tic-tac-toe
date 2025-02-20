@@ -13,7 +13,7 @@ class Settings:
         self.options = ["Cursor", "Random AI behavior", "Exit"]
         self.current_option = 0
 
-        self.cursor_options = ["v", "*", ":", "#", "$", "@"]
+        self.cursor_options = ["v", "*", ":", "#", "$", "@", "/", "="]
         self.current_cursor_option = 0
 
         self.random_ai_options = ["On", "Off"]
