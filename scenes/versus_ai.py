@@ -8,8 +8,9 @@ from scripts.utils import print_grid, find_pair, check_grid
 
 
 class VersusAI:
-    def __init__(self, game_state_manager):
+    def __init__(self, game_state_manager, data):
         self.game_state_manager = game_state_manager
+        self.data = data
 
         self.grid = [
             [" ", " ", " "],
@@ -36,6 +37,8 @@ class VersusAI:
         self.win = "none"
         self.player_wins = 0
         self.ai_wins = 0
+
+        self.ai_tactic = None
 
         self.options = ["Restart", "Return to menu", "Quit"]
         self.current_option = 0
@@ -68,7 +71,7 @@ class VersusAI:
     def run(self):
         self.display_grid = [row[:] for row in self.grid]
 
-        self.display_grid[self.y][self.x] = "v"
+        self.display_grid[self.y][self.x] = self.data.cursor
 
         if self.win == "none":
             print(f'Player wins: {self.player_wins}\tComputer wins: {self.ai_wins}')
@@ -119,6 +122,14 @@ class VersusAI:
                 ai_y = 0
 
                 if move:
+                    if not self.data.random_ai_behavior:
+                        self.ai_tactic = "Blocking"
+                    else:
+                        self.ai_tactic = random.choice(["Blocking", "Advance"])
+                else:
+                    self.ai_tactic = "Advance"
+
+                if self.ai_tactic == "Blocking":
                     # Tactic: blocking
                     self.grid[move[0]][move[1]] = self.ai
                     ai_x = move[1]

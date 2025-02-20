@@ -1,5 +1,6 @@
 import time
 
+from data import Data
 from scenes.menu import Menu
 from scenes.settings import Settings
 from scenes.two_players import TwoPlayers
@@ -8,11 +9,12 @@ from scenes.versus_ai import VersusAI
 
 class Game:
     def __init__(self):
+        self.data = Data()
         self.game_state_manager = GameStateManager("Menu")
         self.menu = Menu(self.game_state_manager)
-        self.settings = Settings(self.game_state_manager)
-        self.two_players = TwoPlayers(self.game_state_manager)
-        self.versus_ai = VersusAI(self.game_state_manager)
+        self.settings = Settings(self.game_state_manager, self.data)
+        self.two_players = TwoPlayers(self.game_state_manager, self.data)
+        self.versus_ai = VersusAI(self.game_state_manager, self.data)
 
         self.states = {"Menu": self.menu, "Settings": self.settings,
                        "Two Players": self.two_players, "Versus AI": self.versus_ai}

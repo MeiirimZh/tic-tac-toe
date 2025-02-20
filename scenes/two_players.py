@@ -6,8 +6,9 @@ from scripts.utils import check_grid, print_grid
 
 
 class TwoPlayers:
-    def __init__(self, game_state_manager):
+    def __init__(self, game_state_manager, data):
         self.game_state_manager = game_state_manager
+        self.data = data
 
         self.grid = [
             [" ", " ", " "],
@@ -53,7 +54,7 @@ class TwoPlayers:
     def run(self):
         self.display_grid = [row[:] for row in self.grid]
 
-        self.display_grid[self.y][self.x] = "v"
+        self.display_grid[self.y][self.x] = self.data.cursor
 
         if self.win == "none":
             print(f'Player 1 wins: {self.player_1_wins}\tPlayer 2 wins: {self.player_2_wins}')
